@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout_timer"
+    android:layout_margin="16dp"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:layout_gravity="center">
+
+    <!-- Note: the built-in circular progress bar isn't adequate here -->
+    <ProgressBar
+        android:id="@+id/progressCircle"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:max="1"
+        android:progress="1"
+        android:progressDrawable="@drawable/circular" />
+
+    <TextView
+        android:id="@+id/progressCircle_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="00:00"
+        android:textSize="28sp" />
+
+</RelativeLayout>

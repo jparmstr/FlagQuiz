@@ -1,0 +1,11 @@
+----- not added -----
+fm - Micronesia (note: many little islands - not recognizable)
+mh - Marshall Islands (not recognizable)
+tv - Tuvalu (not recognizable)
+um - U.S. Minor Outlying Islands (not recognizable)
+
+----- added -----
+je - Jersey (added)
+mp - Northern Mariana Islands (added)
+ps - Palestinian Territory (added - kind of a disputed area)
+xk - Kosovo (added)

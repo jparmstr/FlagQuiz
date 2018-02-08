@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context="com.example.android.flagquiz.TimerDevelopmentActivity">
+
+    <TextView
+        android:id="@+id/textViewTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Placeholder"
+        android:textColor="@android:color/black"
+        android:textSize="30sp" />
+
+    <ProgressBar
+        android:id="@+id/progressBarHorizontal"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout_timer_development"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center">
+
+        <!-- Note: the built-in circular progress bar isn't adequate here -->
+        <ProgressBar
+            android:id="@+id/progressCircle_development"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:max="1"
+            android:progress="1"
+            android:progressDrawable="@drawable/circular" />
+
+        <TextView
+            android:id="@+id/progressCircle_text_development"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="00:00"
+            android:textSize="28sp" />
+    </RelativeLayout>
+
+</LinearLayout>
