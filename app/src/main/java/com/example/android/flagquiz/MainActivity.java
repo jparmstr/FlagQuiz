@@ -2,6 +2,7 @@ package com.example.android.flagquiz;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -25,44 +26,26 @@ public class MainActivity extends AppCompatActivity {
     // Constants
     public static final int ACTIVITY_MENU_CHOICE = R.menu.menu_quiz_debug;
     public static final String HIGHSCORES_FILENAME = "flagQuizHighScores";
+    public static final String PREFS_FILENAME = "flagquiz.preferences";
 
     // High Scores
     public HighScoreItem[] highScores = new HighScoreItem[10];
+    private boolean initialized_highScores;
 
     public enum quizDifficulty {easy, normal, hard}
-
-    // This value does not persist between launches of MainActivity
-    // I might need to use the Shared Preferences file to keep track of whether this array has been initialized
-    // TODO: use Shared Prefs to keep track of first-run initialization boolean
-    // TODO: on first run only, set default values for each of the 10 high scores
-    //      (we get crashes if the highScores array has empty places)
-//    private boolean initialized = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        if (!initialized) {
-//            HighScoreItem testItem = new HighScoreItem();
-//            testItem.setName("Bob");
-//            testItem.setQuizDifficulty(-1);
-//            testItem.setScore(0);
-//            highScores[0] = testItem;
-//            highScores[1] = testItem;
-//            highScores[2] = testItem;
-//            highScores[3] = testItem;
-//            highScores[4] = testItem;
-//            highScores[5] = testItem;
-//            highScores[6] = testItem;
-//            highScores[7] = testItem;
-//            highScores[8] = testItem;
-//            highScores[9] = testItem;
-//
-//            saveHighScores();
-//
-//            initialized = true;
-//        }
+        loadPreferences();
+
+        if (!initialized_highScores) {
+            initializeHighScores();
+        }
+
+        savePreferences();
 
         loadHighScores();
 
@@ -136,6 +119,49 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intentTimerDevelopmentActivity);
     }
 
+    public void loadPreferences() {
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_FILENAME, 0);
+
+        initialized_highScores = sharedPreferences.getBoolean("initialized_highScores", false);
+    }
+
+    public void savePreferences() {
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_FILENAME, 0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putBoolean("initialized_highScores", initialized_highScores);
+
+        editor.apply();
+    }
+
+    /*
+    Set default values for each of the 10 high scores
+    Happens only when the application is run for the first time
+    (Saved via initialized_highScore SharedPreferences value
+    * */
+    private void initializeHighScores() {
+        HighScoreItem testItem = new HighScoreItem();
+        testItem.setName("Bob");
+        testItem.setQuizDifficulty(-1);
+        testItem.setScore(0);
+        highScores[0] = testItem;
+        highScores[1] = testItem;
+        highScores[2] = testItem;
+        highScores[3] = testItem;
+        highScores[4] = testItem;
+        highScores[5] = testItem;
+        highScores[6] = testItem;
+        highScores[7] = testItem;
+        highScores[8] = testItem;
+        highScores[9] = testItem;
+
+        saveHighScores();
+
+        initialized_highScores = true;
+
+        // The Shared Preferences initialized_highScores will be saved by MainActivity.onCreate()
+    }
+
     // Display Toast notification
     private void displayToast(String textToShow) {
         // Display the Toast notification
@@ -149,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             FileInputStream fis = getApplicationContext().openFileInput(HIGHSCORES_FILENAME);
             ObjectInputStream is = new ObjectInputStream(fis);
-            highScores= (HighScoreItem[]) is.readObject();
+            highScores = (HighScoreItem[]) is.readObject();
             is.close();
             fis.close();
         } catch (IOException e) {
