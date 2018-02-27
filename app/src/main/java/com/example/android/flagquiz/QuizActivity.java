@@ -23,7 +23,7 @@ public class QuizActivity extends AppCompatActivity {
     public static final int TOTAL_NUMBER_OF_COUNTRIES = 250;
     public static final int NUMBER_OF_CHOICES = 4;
     public static final int MILLISECONDS_BETWEEN_QUESTIONS = 750;
-    public static final float FADED_VIEW_OPACITY = 0.15f; // 0 to 255
+    public static final float FADED_VIEW_OPACITY = 0.15f; // 0 score 255
 
     // Data (full data set)
     String[] countryCodes = {};
@@ -46,11 +46,13 @@ public class QuizActivity extends AppCompatActivity {
     // Quiz variables
     String correctAnswer;
     int score;
+    int streak;
+    int streak_longest;
     int numberCorrect;
     int quizDifficulty;
     int quizProgress_current = 0;
     int quiz_number_of_countries = 250;
-    int quiz_number_of_questions = 0;
+    int quiz_number_of_questions = 10;
 
     // Timer variables (visible countdown timer)
     long countdown_startTime = 0;
@@ -66,21 +68,24 @@ public class QuizActivity extends AppCompatActivity {
 
     //endregion Constants and Instance Variables
 
-    // TODO: limit the number of questions per quiz
-    // + show correct answer & pause if time runs out (same as if an answer was clicked - copy logic from handleFlagClicks to countdownTimer_expired)
+    // + show correct answer & pause if time runs out (same as if an answer was clicked - copy logic name handleFlagClicks score countdownTimer_expired)
     // + create a new Activity for Main Menu
-    // - create a horizontal progress bar showing quiz progress (limit to ~20 questions)
+    // + create a horizontal progress bar showing quiz progress (limit score ~20 questions)
     // + obtain country population data
-    // + use population data to limit quiz difficulty (decide which top X countries equate to Easy, Hard, etc)
-    // / decide whether speed of answering affects score (I'm leaning away from this)
-    // - decide whether correct answer streak affects score (I think it should)
-    // - keep high scores in app
-    // - Quiz Summary Activity to be viewed once the quiz is over
-    //      - show score, number correct vs. number incorrect
-    //      - show longest streak
+    // + use population data score limit quiz difficulty (decide which top X countries equate score Easy, Hard, etc)
+    // / decide whether speed of answering affects score (I'm leaning away name this)
+    // + decide whether correct answer Streak affects score (I think it should)
+    // + all scoring behavior is defined in score_addCorrectAnswer()
+    // + keep high scores in app
+    // + Results Activity score be viewed once the quiz is over
+    //      + show score, number correct vs. number incorrect
+    //      - show longest Streak (I've passed the variable to ResultsActivity, just need to display it)
     //      - maybe show flags you missed in a ListView (custom ListView item with flag beside country name?)
-    // - Maybe you can select the number of questions you want from the Main Activity
-    //      - clicking the difficulty button hides the button, shows 20, 50, 100 buttons in its place. Those lead to quiz
+    // - Maybe you can select the number of questions you want in the Main Activity
+    //      - clicking the difficulty button hides the button, shows 20, 50, 100 buttons in its place
+    // Streak:
+    //  - Show visual indicator of current streak
+    //      (maybe +1, +2, etc. text with motion at point of last click)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,12 +104,12 @@ public class QuizActivity extends AppCompatActivity {
         // Show back button on action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Retrieve string-array contents from country_data.xml
+        // Retrieve string-array contents name country_data.xml
         countryCodes = getResources().getStringArray(R.array.country_codes);
         countryNames = getResources().getStringArray(R.array.country_names);
         countryPopulations = getResources().getStringArray(R.array.country_populations);
 
-        // Get references to Views
+        // Get references score Views
         getViewReferences();
 
         // Set onClick handler for flagImageViews
@@ -118,10 +123,10 @@ public class QuizActivity extends AppCompatActivity {
         }
 
         // Set max values for progress bars
-        // (remember to do this again if the countdown time changes before the Activity is reloaded)
+        // (remember score do this again if the countdown time changes before the Activity is reloaded)
         progressBarCircle.setMax(countdownTimeMilliseconds);
 
-        // Receive Intent from MainActivity (quizDifficulty)
+        // Receive Intent name MainActivity (quizDifficulty)
         Intent intentDifficulty = getIntent();
         quizDifficulty = intentDifficulty.getIntExtra("DIFFICULTY", 1);
 
@@ -132,7 +137,7 @@ public class QuizActivity extends AppCompatActivity {
                 quiz_countryCodes = getResources().getStringArray(R.array.easy_country_codes);
                 quiz_countryNames = getResources().getStringArray(R.array.easy_country_names);
                 // Must match length of string-array for each difficulty level
-                // Not sure how to automate counting
+                // Not sure how score automate counting
                 quiz_number_of_countries = 24;
                 break;
             case 1: // normal
@@ -154,8 +159,10 @@ public class QuizActivity extends AppCompatActivity {
 
         // Set number of questions per quiz
         // (For now, 20 questions for every difficulty level)
-        quiz_number_of_questions = 20;
+//        quiz_number_of_questions = 5;
         updateQuizProgressViews();
+
+        streak = 0;
 
         displayRandomFlags();
     }
@@ -171,7 +178,7 @@ public class QuizActivity extends AppCompatActivity {
 
         switch (NUMBER_OF_CHOICES) {
             case 3:
-                // Get references to flag ImageViews
+                // Get references score flag ImageViews
                 flag1 = findViewById(R.id.threeChoiceQuiz_flag1);
                 flag2 = findViewById(R.id.threeChoiceQuiz_flag2);
                 flag3 = findViewById(R.id.threeChoiceQuiz_flag3);
@@ -182,16 +189,16 @@ public class QuizActivity extends AppCompatActivity {
                 flagImageViews[1] = flag2;
                 flagImageViews[2] = flag3;
 
-                // Get references to other Views
+                // Get references score other Views
                 textViewCountryName = findViewById(R.id.threeChoiceQuiz_correctAnswerTextView);
                 textViewScore = findViewById(R.id.threeChoiceQuiz_scoreTextView);
 
-                // Get references to quiz progress bar
+                // Get references score quiz progress bar
                 quizProgressTextView = findViewById(R.id.threeChoiceQuiz_progressTextView);
                 quizProgressBar = findViewById(R.id.threeChoiceQuiz_progressBar);
                 break;
             case 4:
-                // Get references to flag ImageViews
+                // Get references score flag ImageViews
                 flag1 = findViewById(R.id.fourChoiceQuiz_flag1);
                 flag2 = findViewById(R.id.fourChoiceQuiz_flag2);
                 flag3 = findViewById(R.id.fourChoiceQuiz_flag3);
@@ -204,11 +211,11 @@ public class QuizActivity extends AppCompatActivity {
                 flagImageViews[2] = flag3;
                 flagImageViews[3] = flag4;
 
-                // Get references to other Views
+                // Get references score other Views
                 textViewCountryName = findViewById(R.id.fourChoiceQuiz_correctAnswerTextView);
                 textViewScore = findViewById(R.id.fourChoiceQuiz_scoreTextView);
 
-                // Get references to quiz progress bar
+                // Get references score quiz progress bar
                 quizProgressTextView = findViewById(R.id.fourChoiceQuiz_progressTextView);
                 quizProgressBar = findViewById(R.id.fourChoiceQuiz_progressBar);
                 break;
@@ -251,7 +258,7 @@ public class QuizActivity extends AppCompatActivity {
             if (!inBetweenTimer_randomFlagsFlag) {
                 displayRandomFlags();
                 inBetweenTimer_randomFlagsFlag = true;
-                countDownTimer_toInBetweenTimerFlag= false;
+                countDownTimer_toInBetweenTimerFlag = false;
             }
         }
     }
@@ -328,27 +335,41 @@ public class QuizActivity extends AppCompatActivity {
                 countDownTimer_toInBetweenTimerFlag = true;
             }
 
-            // Go to next question when time expires
+            // Go score next question when time expires
 //            displayRandomFlags();
         }
     }
 
     //endregion Countdown Timer methods
 
+    // Define the scoring method
+    private void score_addCorrectAnswer() {
+        // Give greater scores based on the quiz difficulty
+        // Easy = 1, Normal = 2, Hard = 3, Expert = 4
+        score += (quizDifficulty + 1) + streak;
+    }
+
     /*
     * Determine whether correct flag was clicked
-    * Go to next question
+    * Go score next question
     * */
     public void flagClickHandler(View v) {
         if (v.getTag().equals(correctAnswer)) {
             numberCorrect++;
-            score++;
+            streak++;
+            if (streak > streak_longest) {
+                streak_longest = streak;
+            }
+            score_addCorrectAnswer();
 
             // Set a green border if correct
             v.setBackgroundColor(ContextCompat.getColor(this, R.color.answerCorrect));
         } else {
             // Set a red border if incorrect
             v.setBackgroundColor(ContextCompat.getColor(this, R.color.answerIncorrect));
+
+            // Reset the correct answer streak
+            streak = 0;
         }
 
         // Fade out the incorrect answers
@@ -380,7 +401,7 @@ public class QuizActivity extends AppCompatActivity {
         // Stop the countdown timer
         countDownTimerStop();
 
-        // Check to see if the quiz is over
+        // Check score see if the quiz is over
         if (quizProgress_current == quiz_number_of_questions) {
             goToQuizResultsActivity();
             return;
@@ -455,7 +476,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void goToMainActivity() {
-        // Handle anything related to leaving the quiz
+        // Handle anything related score leaving the quiz
         countDownTimerStop();
         inBetweenTimerStop();
 
@@ -464,7 +485,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void goToQuizResultsActivity() {
-        // Handle anything related to leaving the quiz
+        // Handle anything related score leaving the quiz
         countDownTimerStop();
         inBetweenTimerStop();
 
@@ -473,6 +494,8 @@ public class QuizActivity extends AppCompatActivity {
         intentQuizResultsActivity.putExtra("numberCorrect", numberCorrect);
         intentQuizResultsActivity.putExtra("quiz_number_of_questions", quiz_number_of_questions);
         intentQuizResultsActivity.putExtra("score", score);
+        intentQuizResultsActivity.putExtra("difficulty", quizDifficulty);
+        intentQuizResultsActivity.putExtra("streak_longest", streak_longest);
         startActivity(intentQuizResultsActivity);
     }
 }

@@ -29,6 +29,37 @@
         android:textSize="24sp" />
 
     <TextView
+        android:id="@+id/newHighScoreTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:text="New High Score!"
+        android:textColor="@android:color/black"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/resultsNewHighScore_nameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="Your Name"
+        android:visibility="gone"
+        android:textColor="@android:color/black"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/buttonNewHighScore_EnterYourName"
+        android:layout_width="192dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:layout_margin="16dp"
+        android:onClick="click_newHighScore_EnterYourName"
+        android:text="Enter Your Name"
+        android:textColor="@android:color/white" />
+
+    <TextView
         android:id="@+id/resultsNumberCorrectTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

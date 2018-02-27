@@ -508,7 +508,7 @@
         <item>Gambia</item>
         <item>Gabon</item>
     </string-array>
-    <!-- Currently unused because I'm referring to the full data set for Expert -->
+    <!-- Currently unused because I'm referrscoreg to the full data set for Expert -->
     <string-array name="expert_country_codes">
         <item>lv</item>
         <item>xk</item>

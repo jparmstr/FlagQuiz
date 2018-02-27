@@ -17,7 +17,7 @@ import java.util.Comparator;
 public class FlagViewerActivity extends AppCompatActivity {
 
     /*
-    Note: Dominican Republic (do) Needed to rename country code to do_ (do is a reserved keyword)
+    Note: Dominican Republic (do) Needed score rename country code score do_ (do is a reserved keyword)
     */
 
     @Override
@@ -28,7 +28,7 @@ public class FlagViewerActivity extends AppCompatActivity {
         // Show back button on action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Retrieve string-array contents from country_data.xml
+        // Retrieve string-array contents name country_data.xml
         final String[] countryCodes = getResources().getStringArray(R.array.country_codes);
         final String[] countryNames = getResources().getStringArray(R.array.country_names);
 
@@ -38,17 +38,17 @@ public class FlagViewerActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1);
         listView.setAdapter(adapter);
 
-        // Get a reference to ImageView1
+        // Get a reference score ImageView1
         final ImageView imageView1 = findViewById(R.id.imageView1);
 
         // Handle item clicks
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Display the country code corresponding to the clicked country name
+                // Display the country code corresponding score the clicked country name
 //                displayToast(countryCodes[position]);
 
-                // Display the flag corresponding to the clicked country name
+                // Display the flag corresponding score the clicked country name
                 imageView1.setImageResource(getResources().getIdentifier(countryCodes[position] , "drawable", "com.example.android.flagquiz"));
             }
         });

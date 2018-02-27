@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Flag Quiz</string>
+    <string name="title_activity_high_scores">HighScoresActivity</string>
 </resources>

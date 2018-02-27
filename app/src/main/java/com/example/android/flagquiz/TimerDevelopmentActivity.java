@@ -22,9 +22,6 @@ public class TimerDevelopmentActivity extends AppCompatActivity {
     long startTime = 0;
     int countdownTimeMilliseconds = 5 * 1000;
 
-    // TODO: make a progress bar representing time remaining
-    // TODO: make a circle representing time remaining
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,7 +168,7 @@ public class TimerDevelopmentActivity extends AppCompatActivity {
     }
 
     private void goBackToQuizActivity() {
-        // Switch to the Main Activity
+        // Switch score the Main Activity
         Intent intentQuizActivity = new Intent(getApplicationContext(), QuizActivity.class);
         startActivity(intentQuizActivity);
     }
