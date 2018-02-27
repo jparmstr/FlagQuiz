@@ -7,9 +7,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +22,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import static android.content.res.Resources.getSystem;
 import static com.example.android.flagquiz.MainActivity.HIGHSCORES_FILENAME;
 
 public class ResultsActivity extends AppCompatActivity {
@@ -76,29 +79,43 @@ public class ResultsActivity extends AppCompatActivity {
         }
     }
 
+    private static int convertDpToPixel(float dp){
+        DisplayMetrics metrics = getSystem().getDisplayMetrics();
+        float px = dp * (metrics.densityDpi / 160f);
+        return Math.round(px);
+    }
+
     public void click_newHighScore_EnterYourName(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Title");
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Title");
 
-        // Set up the input
-        final EditText input = new EditText(this);
+        // Set up the editText
+        final LinearLayout linearLayout = new LinearLayout(this);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(convertDpToPixel(16), 0, convertDpToPixel(16), 0);
+        final EditText editText = new EditText(this);
+        // TODO: limit how much text can be entered in editText
+        editText.setLayoutParams(lp);
+        linearLayout.addView(editText, lp);
 
-        // Need to set margin on EditText input
+        // Specify the type of editText expected
+        editText.setInputType(InputType.TYPE_CLASS_TEXT);
+        alertDialog.setView(linearLayout);
+        alertDialog.setTitle("Enter Your Name");
 
-        // Specify the type of input expected
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
-        builder.setTitle("Enter Your Name");
+        linearLayout.requestLayout();
 
         // Set up the buttons
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Create a new high score item
                 HighScoreItem thisHighScore = new HighScoreItem();
 
                 thisHighScore.setQuizDifficulty(quizDifficulty);
-                thisHighScore.setName(input.getText().toString());
+                thisHighScore.setName(editText.getText().toString());
                 thisHighScore.setScore(score);
 
                 // When the Activity loaded we only let the New High Score Views be visible if
@@ -114,14 +131,14 @@ public class ResultsActivity extends AppCompatActivity {
                 resultsNewHighScore_nameTextView.setText(thisHighScore.getName());
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });
 
-        builder.show();
+        alertDialog.show();
     }
 
     //region Methods to manage High Scores array
