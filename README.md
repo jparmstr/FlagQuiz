@@ -12,8 +12,8 @@ App features:
 <li>A custom, circular progress bar. This is defined in drawable/circular.xml. See the TimerDevelopmentActivity for more details about this.</li>
 </ul>
 
-I used flag images from https://github.com/emcrisostomo/flags <br>
-The app uses two-letter country codes to refer to each country internally. I used a combination of country code data from a few different sources and tidied it up in Excel. I also used Excel to tag my data such as "<item>East Timor</item>" so that I could copy-paste the whole list into country_data.xml at once.
+I used flag images from https://github.com/emcrisostomo/flags <br><br>
+The app uses two-letter country codes to refer to each country internally. I used a combination of country code data from a few different sources and tidied it up in Excel. I also used Excel to tag my data such as "\<item\>East Timor\</item\>" so that I could copy-paste the whole list into country_data.xml at once.
 
 You can see it in action here: https://www.youtube.com/watch?v=qZd2S38mLn4?version=3&vq=hd720
 
