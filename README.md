@@ -6,7 +6,7 @@ App features:
 <li>Three difficulty levels which can be easily redefined in values/country_data.xml</li>
 <li>Scorekeeping which rewards you for difficulty level and number of correct answers in a row (streak)</li>
 <li>A custom adapter, HighScoreItemAdapter, which is used to dynamically display the top 10 high scores</li>
-<li>The app uses Shared Preferences to remember whether this is it's first run or not. If it is, it fills the high score board with dummy data (currently Bob, 0 points, Unknown difficulty).</li>
+<li>The app uses Shared Preferences to remember whether this is its first run or not. If it is, it fills the high score board with dummy data (currently Bob, 0 points, Unknown difficulty).</li>
 <li>A custom class, HighScoreItem. This implements Serializable which facilitates easy saving and loading.</li>
 <li>The app saves and loads its high scores array using ObjectOutputStream & ObjectInputStream which automatically serializes the HighScoreItem objects.</li>
 <li>A custom, circular progress bar. This is defined in drawable/circular.xml. See the TimerDevelopmentActivity for more details about this.</li>
