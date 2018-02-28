@@ -15,14 +15,14 @@ import java.util.Comparator;
  * Created by Pete on 2/9/2018.
  */
 
-public class CustomAdapter2 extends BaseAdapter {
+public class HighScoreItemAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
     private String[] quizDifficulties;
     private int[] scores;
     private String[] names;
 
-    public CustomAdapter2(Context c, ArrayList<HighScoreItem> entries, sortOptionNames sort) {
+    public HighScoreItemAdapter(Context c, ArrayList<HighScoreItem> entries, sortOptionNames sort) {
         // Sort entries
         switch (sort) {
             case sortByScore:
@@ -86,7 +86,7 @@ public class CustomAdapter2 extends BaseAdapter {
             // If scores are exactly the same, sort by name instead
             if (obj1.getScore() == obj2.getScore()) {
                 // Change this to sort by date if we add Date attribute to HighScoreItem
-                return obj1.getName().compareToIgnoreCase(obj2.getName());
+                return -1 * (obj1.getName().compareToIgnoreCase(obj2.getName()));
             } else {
                 // I created my own compare methods because Android Studio was complaining
                 // about API Level for Integer.compare and API 15

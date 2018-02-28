@@ -18,6 +18,7 @@ public class FlagViewerActivity extends AppCompatActivity {
 
     /*
     Note: Dominican Republic (do) Needed score rename country code score do_ (do is a reserved keyword)
+    TODO: refactor handling of country_data.xml so that there isn't duplicate data (for instance we have up to 4 copies of each Country Name)
     */
 
     @Override

@@ -41,11 +41,11 @@
         <item>Philippines</item>
         <item>Ethiopia</item>
         <item>Egypt</item>
-        <item>Viet Nam</item>
+        <item>Vietnam</item>
         <item>Germany</item>
         <item>Iran</item>
         <item>Turkey</item>
-        <item>Congo</item>
+        <item>Democratic Republic of the Congo</item>
         <item>Thailand</item>
         <item>France</item>
         <item>United Kingdom</item>
@@ -144,11 +144,11 @@
         <item>Philippines</item>
         <item>Ethiopia</item>
         <item>Egypt</item>
-        <item>Viet Nam</item>
+        <item>Vietnam</item>
         <item>Germany</item>
         <item>Iran</item>
         <item>Turkey</item>
-        <item>Congo</item>
+        <item>Democratic Republic of the Congo</item>
         <item>Thailand</item>
         <item>France</item>
         <item>United Kingdom</item>
@@ -372,11 +372,11 @@
         <item>Philippines</item>
         <item>Ethiopia</item>
         <item>Egypt</item>
-        <item>Viet Nam</item>
+        <item>Vietnam</item>
         <item>Germany</item>
         <item>Iran</item>
         <item>Turkey</item>
-        <item>Congo</item>
+        <item>Democratic Republic of the Congo</item>
         <item>Thailand</item>
         <item>France</item>
         <item>United Kingdom</item>
@@ -476,7 +476,7 @@
         <item>Finland</item>
         <item>Slovakia</item>
         <item>Norway</item>
-        <item>Congo</item>
+        <item>Republic of the Congo</item>
         <item>Eritrea</item>
         <item>Costa Rica</item>
         <item>Ireland</item>
@@ -673,7 +673,7 @@
         <item>Guernsey</item>
         <item>Cayman Islands</item>
         <item>Greenland</item>
-        <item>AmericanSamoa</item>
+        <item>American Samoa</item>
         <item>Northern Mariana Islands</item>
         <item>Saint Kitts and Nevis</item>
         <item>Marshall Islands</item>
@@ -1225,7 +1225,7 @@
         <item>Åland Islands</item>
         <item>Albania</item>
         <item>Algeria</item>
-        <item>AmericanSamoa</item>
+        <item>American Samoa</item>
         <item>Andorra</item>
         <item>Angola</item>
         <item>Anguilla</item>
@@ -1272,8 +1272,8 @@
         <item>Cocos (Keeling) Islands</item>
         <item>Colombia</item>
         <item>Comoros</item>
-        <item>Congo</item>
-        <item>Congo</item>
+        <item>Democratic Republic of the Congo</item>
+        <item>Republic of the Congo</item>
         <item>Cook Islands</item>
         <item>Costa Rica</item>
         <item>Croatia</item>
@@ -1465,7 +1465,7 @@
         <item>Uzbekistan</item>
         <item>Vanuatu</item>
         <item>Venezuela</item>
-        <item>Viet Nam</item>
+        <item>Vietnam</item>
         <item>Wallis and Futuna</item>
         <item>Western Sahara</item>
         <item>Yemen</item>

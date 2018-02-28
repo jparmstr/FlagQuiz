@@ -16,8 +16,8 @@ import java.util.List;
  */
 
 /*
-* This serves the same purpose as CustomAdapter2
-* This overrides ArrayAdapter while CustomAdapter2 overrides BaseAdapter
+* This serves the same purpose as HighScoreItemAdapter
+* This overrides ArrayAdapter while HighScoreItemAdapter overrides BaseAdapter
 * I found this version on Stack Overflow but it wasn't working at first due to an unrelated error
 * The 2nd version is based on earlier code that I used in mynotesapp
 * I like the 2nd version better because it supports custom sorting and the getView method is simpler*/

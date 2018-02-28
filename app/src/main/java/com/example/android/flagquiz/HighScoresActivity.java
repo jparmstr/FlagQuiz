@@ -30,12 +30,12 @@ public class HighScoresActivity extends AppCompatActivity {
 
         // Populate ListView with High Scores
         final ListView highScoresListView = findViewById(R.id.highScoresListView);
-        // Prepare data for CustomAdapter2 (convert from Array to ArrayList and remove empty entries)
+        // Prepare data for HighScoreItemAdapter (convert from Array to ArrayList and remove empty entries)
         ArrayList<HighScoreItem> data = new ArrayList<HighScoreItem>(Arrays.asList(highScores));
         while (data.remove(null)) ;
-        // Specify sort option based on enum in CustomAdapter2
-        CustomAdapter2.sortOptionNames sort = CustomAdapter2.sortOptionNames.sortByScore;
-        CustomAdapter2 adapter = new CustomAdapter2(this, data, sort);
+        // Specify sort option based on enum in HighScoreItemAdapter
+        HighScoreItemAdapter.sortOptionNames sort = HighScoreItemAdapter.sortOptionNames.sortByScore;
+        HighScoreItemAdapter adapter = new HighScoreItemAdapter(this, data, sort);
         highScoresListView.setAdapter(adapter);
     }
 
