@@ -35,6 +35,7 @@ public class TimerDevelopmentActivity extends AppCompatActivity {
 
         // Show back button on action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Timer Development");
 
         countDown_setUpProgressBars_maxValues();
         timerStart();
@@ -169,7 +170,7 @@ public class TimerDevelopmentActivity extends AppCompatActivity {
 
     private void goBackToQuizActivity() {
         // Switch score the Main Activity
-        Intent intentQuizActivity = new Intent(getApplicationContext(), QuizActivity.class);
+        Intent intentQuizActivity = new Intent(getApplicationContext(), FlagQuizActivity.class);
         startActivity(intentQuizActivity);
     }
 }

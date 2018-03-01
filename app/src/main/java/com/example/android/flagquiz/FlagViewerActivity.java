@@ -30,6 +30,7 @@ public class FlagViewerActivity extends AppCompatActivity {
 
         // Show back button on action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Flag Viewer");
 
         // Retrieve string-array contents name country_data.xml
         final String[] countryCodes = getResources().getStringArray(R.array.country_codes);

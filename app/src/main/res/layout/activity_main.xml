@@ -14,15 +14,42 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/textViewMainActivityTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="32dp"
-            android:text="Flag Quiz"
+            android:text="Choose Quiz Type"
             android:textAlignment="center"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="36sp"
             android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/buttonQuizTypeFlags"
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@color/flagQuizColor"
+            android:text="Flags"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/buttonQuizTypeCountryNames"
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@color/countryNameQuizColor"
+            android:text="Country Names"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/buttonQuizTypeQuestions"
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@color/questionsQuizColor"
+            android:text="Questions"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/buttonQuizEasy"
@@ -31,7 +58,8 @@
             android:layout_margin="8dp"
             android:background="@color/easyQuizColor"
             android:text="Easy"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/buttonQuizNormal"
@@ -40,7 +68,8 @@
             android:layout_margin="8dp"
             android:background="@color/normalQuizColor"
             android:text="Normal"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/buttonQuizHard"
@@ -49,7 +78,8 @@
             android:layout_margin="8dp"
             android:background="@color/hardQuizColor"
             android:text="Hard"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
 
         <Space
             android:layout_width="match_parent"

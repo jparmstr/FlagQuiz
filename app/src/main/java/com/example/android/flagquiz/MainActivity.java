@@ -1,6 +1,5 @@
 package com.example.android.flagquiz;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +13,7 @@ import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -28,26 +28,45 @@ import java.io.ObjectOutputStream;
 
 public class MainActivity extends AppCompatActivity {
 
-    // TODO: Questions are in a variety of formats such as free text response, checkboxes, and radio buttons.
-    // Checkboxes are only used for questions with multiple right answers. Radio buttons are only used for questions with a single right answer.
+    // Quiz types:
+    // + identify Flag given Name
+    // + identify Name given Flag (multiple choice radio buttons)
+    // + identify Name given Flag (fill in the blank, free text response) - no score given in this mode, no timer... or is there?
+    //     + maybe this is the scrolling, boring quiz with a Submit button
+    //     + maybe some of the questions give you two flags to identify
 
-    // TODO: The app gracefully handles displaying all the content on screen when rotated. Either by updating the layout, adding a scrollable feature or some other mechanism that adheres to Android development guidelines.
-
+    //region constants and instance variables
     // Constants
     public static final int ACTIVITY_MENU_CHOICE = R.menu.menu_quiz_debug;
     public static final String HIGHSCORES_FILENAME = "flagQuizHighScores";
     public static final String PREFS_FILENAME = "flagquiz.preferences";
 
+    // View references
+    Button buttonEasyQuiz;
+    Button buttonNormalQuiz;
+    Button buttonHardQuiz;
+    Button buttonFlagViewer;
+    Button buttonHighScores;
+    Button buttonQuizTypeFlags;
+    Button buttonQuizTypeCountryNames;
+    Button buttonQuizTypeFillInTheBlank;
+    TextView textViewMainActivityTitle;
+
     // High Scores
     public HighScoreItem[] highScores = new HighScoreItem[10];
     private boolean initialized_highScores;
 
+    // Enumerations
     public enum quizDifficulty {easy, normal, hard}
+    public enum quizType {flags, countryNames, fillInTheBlank}
+    //endregion constants and instance variables
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getSupportActionBar().setTitle("Main Menu");
 
         loadPreferences();
 
@@ -59,30 +78,25 @@ public class MainActivity extends AppCompatActivity {
 
         loadHighScores();
 
-        // Get button references
-        Button buttonEasyQuiz = findViewById(R.id.buttonQuizEasy);
-        Button buttonNormalQuiz = findViewById(R.id.buttonQuizNormal);
-        Button buttonHardQuiz = findViewById(R.id.buttonQuizHard);
-        Button buttonFlagViewer = findViewById(R.id.buttonFlagViewer);
-        Button buttonHighScores = findViewById(R.id.buttonHighScores);
+        getButtonReferences();
 
         // Add button click handlers
-        buttonEasyQuiz.setOnClickListener(new View.OnClickListener() {
+        buttonQuizTypeFlags.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                difficultyButtonHandler(quizDifficulty.easy.ordinal());
+                quizTypeButtonHandler(quizType.flags.ordinal());
             }
         });
-        buttonNormalQuiz.setOnClickListener(new View.OnClickListener() {
+        buttonQuizTypeCountryNames.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                difficultyButtonHandler(quizDifficulty.normal.ordinal());
+                quizTypeButtonHandler(quizType.countryNames.ordinal());
             }
         });
-        buttonHardQuiz.setOnClickListener(new View.OnClickListener() {
+        buttonQuizTypeFillInTheBlank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                difficultyButtonHandler(quizDifficulty.hard.ordinal());
+                quizTypeButtonHandler(quizType.fillInTheBlank.ordinal());
             }
         });
         buttonFlagViewer.setOnClickListener(new View.OnClickListener() {
@@ -95,22 +109,96 @@ public class MainActivity extends AppCompatActivity {
         buttonHighScores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentHighScores = new Intent(getApplicationContext(), HighScoresActivity.class);
+                Intent intentHighScores = new Intent(getApplicationContext(), HighScoreViewerActivity.class);
                 startActivity(intentHighScores);
             }
         });
+
+        // Change the title text to reflect current action
+        textViewMainActivityTitle.setText("Choose Quiz Type");
     }
 
-    private void difficultyButtonHandler(int difficulty) {
-        Intent intent = new Intent(getApplicationContext(), QuizActivity.class);
+    private void quizTypeButtonHandler(final int thisQuizType) {
+        // Hide the quiz type buttons and Show the quiz difficulty buttons
+        buttonQuizTypeFlags.setVisibility(View.GONE);
+        buttonQuizTypeCountryNames.setVisibility(View.GONE);
+        buttonQuizTypeFillInTheBlank.setVisibility(View.GONE);
+
+        buttonEasyQuiz.setVisibility(View.VISIBLE);
+        buttonNormalQuiz.setVisibility(View.VISIBLE);
+        buttonHardQuiz.setVisibility(View.VISIBLE);
+
+        // Set button click handlers
+        buttonEasyQuiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                difficultyButtonHandler(quizDifficulty.easy.ordinal(), thisQuizType);
+            }
+        });
+        buttonNormalQuiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                difficultyButtonHandler(quizDifficulty.normal.ordinal(), thisQuizType);
+            }
+        });
+        buttonHardQuiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                difficultyButtonHandler(quizDifficulty.hard.ordinal(), thisQuizType);
+            }
+        });
+
+        // Change the title text to reflect current action
+        switch (thisQuizType) {
+            case 0:
+                textViewMainActivityTitle.setText("Flag Quiz");
+                break;
+            case 1:
+                textViewMainActivityTitle.setText("Country Name Quiz");
+                break;
+            case 2:
+                textViewMainActivityTitle.setText("Multiple Questions Quiz");
+                break;
+        }
+    }
+
+    private void difficultyButtonHandler(int difficulty, int thisQuizType) {
+        Class thisClass = null;
+
+        switch (thisQuizType) {
+            case 0:
+                thisClass = FlagQuizActivity.class;
+                break;
+            case 1:
+                thisClass = CountryNameQuizActivity.class;
+                break;
+            case 2:
+                thisClass = QuestionQuizActivity.class;
+                break;
+        }
+
+        Intent intent = new Intent(getApplicationContext(), thisClass);
         intent.putExtra("DIFFICULTY", difficulty); // 0
 
-        // Pass the current screen orientation so that QuizActivity can lock it there during the quiz
+        // Pass the current screen orientation so that FlagQuizActivity can lock it there during the quiz
         int thisOrientation = getScreenRotation();
         thisOrientation = translateScreenRotation_degrees_toActivityInfoScreenOrientation(thisOrientation);
         intent.putExtra("screenOrientation", thisOrientation);
 
         startActivity(intent);
+    }
+
+    private void getButtonReferences() {
+        // Get button references
+        buttonEasyQuiz = findViewById(R.id.buttonQuizEasy);
+        buttonNormalQuiz = findViewById(R.id.buttonQuizNormal);
+        buttonHardQuiz = findViewById(R.id.buttonQuizHard);
+        buttonFlagViewer = findViewById(R.id.buttonFlagViewer);
+        buttonHighScores = findViewById(R.id.buttonHighScores);
+        buttonQuizTypeFlags = findViewById(R.id.buttonQuizTypeFlags);
+        buttonQuizTypeCountryNames = findViewById(R.id.buttonQuizTypeCountryNames);
+        buttonQuizTypeFillInTheBlank = findViewById(R.id.buttonQuizTypeQuestions);
+        textViewMainActivityTitle = findViewById(R.id.textViewMainActivityTitle);
     }
 
     // Get the screen orientation in degrees
@@ -167,6 +255,11 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.recreate();
     }
 
     private void goToTimerDevelopmentActivity() {
@@ -289,4 +382,5 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
 }

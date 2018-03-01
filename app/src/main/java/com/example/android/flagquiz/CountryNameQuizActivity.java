@@ -2,21 +2,25 @@ package com.example.android.flagquiz;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class QuizActivity extends AppCompatActivity {
+/**
+ * Created by Pete on 3/1/2018.
+ */
+
+public class CountryNameQuizActivity extends AppCompatActivity {
 
     //region Constants and Instance Variables
 
@@ -36,8 +40,8 @@ public class QuizActivity extends AppCompatActivity {
     String[] quiz_countryNames = {};
 
     // View references
-    ImageView[] flagImageViews;
-    TextView textViewCountryName;
+    ImageView countryNames_flagImageView;
+    RadioButton[] countryNames_choices;
     ProgressBar progressBarCircle;
     TextView progressCircle_text;
     TextView textViewScore;
@@ -46,6 +50,7 @@ public class QuizActivity extends AppCompatActivity {
 
     // Quiz variables
     String correctAnswer;
+    int correctAnswerPosition;
     int score;
     int streak;
     int streak_longest;
@@ -69,28 +74,6 @@ public class QuizActivity extends AppCompatActivity {
 
     //endregion Constants and Instance Variables
 
-    //region notes
-    // + show correct answer & pause if time runs out (same as if an answer was clicked - copy logic name handleFlagClicks score countdownTimer_expired)
-    // + create a new Activity for Main Menu
-    // + create a horizontal progress bar showing quiz progress (limit score ~20 questions)
-    // + obtain country population data
-    // + use population data score limit quiz difficulty (decide which top X countries equate score Easy, Hard, etc)
-    // / decide whether speed of answering affects score (I'm leaning away name this)
-    // + decide whether correct answer Streak affects score (I think it should)
-    // + all scoring behavior is defined in score_addCorrectAnswer()
-    // + keep high scores in app
-    // + Results Activity score be viewed once the quiz is over
-    //      + show score, number correct vs. number incorrect
-    //      - show longest Streak (I've passed the variable to ResultsActivity, just need to display it)
-    //      - maybe show flags you missed in a ListView (custom ListView item with flag beside country name?)
-    // - Maybe you can select the number of questions you want in the Main Activity
-    //      - clicking the difficulty button hides the button, shows 20, 50, 100 buttons in its place
-    // Streak:
-    //  - Show visual indicator of current streak
-    //      (maybe +1, +2, etc. text with motion at point of last click)
-
-    //endregion notes
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,18 +84,12 @@ public class QuizActivity extends AppCompatActivity {
         int thisRequestedOrientation = intent.getIntExtra("screenOrientation", ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setRequestedOrientation(thisRequestedOrientation);
 
-        // Select layout based on Constant NUMBER_OF_CHOICES
-        switch (NUMBER_OF_CHOICES) {
-            case 3:
-                setContentView(R.layout.activity_quiz_three_choices);
-                break;
-            case 4:
-                setContentView(R.layout.activity_quiz_four_choices);
-                break;
-        }
+        setContentView(R.layout.activity_country_names_quiz);
 
         // Show back button on action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        getSupportActionBar().setTitle("Country Names Quiz");
 
         // Retrieve string-array contents name country_data.xml
         countryCodes = getResources().getStringArray(R.array.country_codes);
@@ -123,11 +100,11 @@ public class QuizActivity extends AppCompatActivity {
         getViewReferences();
 
         // Set onClick handler for flagImageViews
-        for (ImageView flag : flagImageViews) {
-            flag.setOnClickListener(new View.OnClickListener() {
+        for (RadioButton choice : countryNames_choices) {
+            choice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    flagClickHandler(v);
+                    choiceClickHandler(v);
                 }
             });
         }
@@ -177,58 +154,34 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void getViewReferences() {
-        ImageView flag1;
-        ImageView flag2;
-        ImageView flag3;
-        ImageView flag4;
+        RadioButton choice1;
+        RadioButton choice2;
+        RadioButton choice3;
+        RadioButton choice4;
 
         progressBarCircle = findViewById(R.id.progressCircle);
         progressCircle_text = findViewById(R.id.progressCircle_text);
 
-        switch (NUMBER_OF_CHOICES) {
-            case 3:
-                // Get references score flag ImageViews
-                flag1 = findViewById(R.id.threeChoiceQuiz_flag1);
-                flag2 = findViewById(R.id.threeChoiceQuiz_flag2);
-                flag3 = findViewById(R.id.threeChoiceQuiz_flag3);
+        // Get references score flag ImageViews
+        choice1 = findViewById(R.id.countryNames_choice1);
+        choice2 = findViewById(R.id.countryNames_choice2);
+        choice3 = findViewById(R.id.countryNames_choice3);
+        choice4 = findViewById(R.id.countryNames_choice4);
 
-                // Store flag ImageViews in an Array
-                flagImageViews = new ImageView[3];
-                flagImageViews[0] = flag1;
-                flagImageViews[1] = flag2;
-                flagImageViews[2] = flag3;
+        // Store flag ImageViews in an Array
+        countryNames_choices = new RadioButton[4];
+        countryNames_choices[0] = choice1;
+        countryNames_choices[1] = choice2;
+        countryNames_choices[2] = choice3;
+        countryNames_choices[3] = choice4;
 
-                // Get references score other Views
-                textViewCountryName = findViewById(R.id.threeChoiceQuiz_correctAnswerTextView);
-                textViewScore = findViewById(R.id.threeChoiceQuiz_scoreTextView);
+        // Get references score other Views
+        countryNames_flagImageView = findViewById(R.id.countryNames_flagImageView);
+        textViewScore = findViewById(R.id.countryNames_scoreTextView);
 
-                // Get references score quiz progress bar
-                quizProgressTextView = findViewById(R.id.threeChoiceQuiz_progressTextView);
-                quizProgressBar = findViewById(R.id.threeChoiceQuiz_progressBar);
-                break;
-            case 4:
-                // Get references score flag ImageViews
-                flag1 = findViewById(R.id.fourChoiceQuiz_flag1);
-                flag2 = findViewById(R.id.fourChoiceQuiz_flag2);
-                flag3 = findViewById(R.id.fourChoiceQuiz_flag3);
-                flag4 = findViewById(R.id.fourChoiceQuiz_flag4);
-
-                // Store flag ImageViews in an Array
-                flagImageViews = new ImageView[4];
-                flagImageViews[0] = flag1;
-                flagImageViews[1] = flag2;
-                flagImageViews[2] = flag3;
-                flagImageViews[3] = flag4;
-
-                // Get references score other Views
-                textViewCountryName = findViewById(R.id.fourChoiceQuiz_correctAnswerTextView);
-                textViewScore = findViewById(R.id.fourChoiceQuiz_scoreTextView);
-
-                // Get references score quiz progress bar
-                quizProgressTextView = findViewById(R.id.fourChoiceQuiz_progressTextView);
-                quizProgressBar = findViewById(R.id.fourChoiceQuiz_progressBar);
-                break;
-        }
+        // Get references score quiz progress bar
+        quizProgressTextView = findViewById(R.id.countryNames_progressTextView);
+        quizProgressBar = findViewById(R.id.countryNames_progressBar);
     }
 
     //region In Between Timer methods
@@ -326,9 +279,9 @@ public class QuizActivity extends AppCompatActivity {
             progressCircle_text.setText("00:00");
 
             // Fade out the incorrect answers
-            for (ImageView flag : flagImageViews) {
-                if (!flag.getTag().equals(correctAnswer)) {
-                    flag.setAlpha(FADED_VIEW_OPACITY);
+            for (RadioButton choice : countryNames_choices) {
+                if (!choice.getTag().equals(correctAnswer)) {
+                    choice.setAlpha(FADED_VIEW_OPACITY);
                 }
             }
 
@@ -336,7 +289,7 @@ public class QuizActivity extends AppCompatActivity {
             inBetweenTimer_randomFlagsFlag = false;
 
             // Update Correct Answer and Score TextViews
-            updateCorrectAnswerTextView();
+            updateCorrectAnswerImageView();
             updateScoreTextView();
 
             if (!countDownTimer_toInBetweenTimerFlag) {
@@ -362,7 +315,7 @@ public class QuizActivity extends AppCompatActivity {
     * Determine whether correct flag was clicked
     * Go score next question
     * */
-    public void flagClickHandler(View v) {
+    public void choiceClickHandler(View v) {
         if (v.getTag().equals(correctAnswer)) {
             numberCorrect++;
             streak++;
@@ -382,14 +335,14 @@ public class QuizActivity extends AppCompatActivity {
         }
 
         // Fade out the incorrect answers
-        for (ImageView flag : flagImageViews) {
-            if (!flag.getTag().equals(correctAnswer)) {
-                flag.setAlpha(FADED_VIEW_OPACITY);
+        for (RadioButton choice : countryNames_choices) {
+            if (!choice.getTag().equals(correctAnswer)) {
+                choice.setAlpha(FADED_VIEW_OPACITY);
             }
         }
 
         // Update Correct Answer and Score TextViews
-        updateCorrectAnswerTextView();
+        updateCorrectAnswerImageView();
         updateScoreTextView();
 
         // Reset the in between timer flag
@@ -399,6 +352,14 @@ public class QuizActivity extends AppCompatActivity {
         // (This timer will call displayRandomFlags() once it has expired)
         countDownTimerStop();
         inBetweenTimerStart();
+    }
+
+    // Uncheck all country name radio buttons
+    // (We're handling button clicks ourselves; not using a RadioGroup)
+    private void uncheckAllRadioButtons() {
+        for (RadioButton r : countryNames_choices) {
+            r.setChecked(false);
+        }
     }
 
     /*
@@ -416,10 +377,12 @@ public class QuizActivity extends AppCompatActivity {
             return;
         }
 
+        uncheckAllRadioButtons();
+
         int position;
         ArrayList<Integer> positions = new ArrayList<Integer>();
 
-        for (ImageView flag : flagImageViews) {
+        for (RadioButton choice : countryNames_choices) {
             position = random.nextInt(quiz_number_of_countries);
 
             // Make sure we get 3 different results
@@ -430,24 +393,26 @@ public class QuizActivity extends AppCompatActivity {
             positions.add(position);
 
             // Reset opacity (fully opaque)
-            flag.setAlpha(1.0f);
+            choice.setAlpha(1.0f);
 
-            // Set the flag ImageView source
-            flag.setImageResource(getResources().getIdentifier(quiz_countryCodes[position], "drawable", "com.example.android.flagquiz"));
+            // Set the choice text
+//            choice.setImageResource(getResources().getIdentifier(quiz_countryCodes[position], "drawable", "com.example.android.flagquiz"));
+            choice.setText(quiz_countryNames[position]);
 
             // Set the tag = the country name
-            flag.setTag(quiz_countryNames[position]);
+            choice.setTag(quiz_countryNames[position]);
 
             // Clear the background color
-            flag.setBackgroundColor(ContextCompat.getColor(this, R.color.backgroundColor));
+            choice.setBackgroundColor(ContextCompat.getColor(this, R.color.backgroundColor));
         }
 
         // Randomly choose which answer is correct (out of the previously chosen positions)
         position = random.nextInt(NUMBER_OF_CHOICES);
+        correctAnswerPosition = positions.get(position);
         correctAnswer = quiz_countryNames[positions.get(position)];
 
-        // Update the TextView showing the country name and the Score TextView
-        updateCorrectAnswerTextView();
+        // Update the ImageView showing the correct Flag and the Score TextView
+        updateCorrectAnswerImageView();
         updateScoreTextView();
 
         // Update quiz progress
@@ -458,8 +423,8 @@ public class QuizActivity extends AppCompatActivity {
         countDownTimerStart();
     }
 
-    private void updateCorrectAnswerTextView() {
-        textViewCountryName.setText(correctAnswer);
+    private void updateCorrectAnswerImageView() {
+        countryNames_flagImageView.setImageResource(getResources().getIdentifier(quiz_countryCodes[correctAnswerPosition], "drawable", "com.example.android.flagquiz"));
     }
 
     private void updateScoreTextView() {

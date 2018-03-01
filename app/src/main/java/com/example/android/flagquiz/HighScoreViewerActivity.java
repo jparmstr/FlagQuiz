@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 import static com.example.android.flagquiz.MainActivity.HIGHSCORES_FILENAME;
 
-public class HighScoresActivity extends AppCompatActivity {
+public class HighScoreViewerActivity extends AppCompatActivity {
 
     public HighScoreItem[] highScores = new HighScoreItem[10];
 
@@ -25,6 +25,7 @@ public class HighScoresActivity extends AppCompatActivity {
 
         // Show back button on action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("High Scores");
 
         loadHighScores();
 

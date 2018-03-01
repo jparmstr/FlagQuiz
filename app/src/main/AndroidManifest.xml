@@ -10,7 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".FlagViewerActivity" />
-        <activity android:name=".QuizActivity" />
+        <activity android:name=".FlagQuizActivity" />
+        <activity android:name=".CountryNameQuizActivity" />
+        <activity android:name=".QuestionQuizActivity" />
         <activity android:name=".TimerDevelopmentActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -20,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ResultsActivity" />
-        <activity android:name=".HighScoresActivity"></activity>
+        <activity android:name=".HighScoreViewerActivity"></activity>
     </application>
 
 </manifest>

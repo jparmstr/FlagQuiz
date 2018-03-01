@@ -52,6 +52,8 @@ public class ResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
+        getSupportActionBar().setTitle("Results");
+
         // Load High Scores
         loadHighScores();
 
