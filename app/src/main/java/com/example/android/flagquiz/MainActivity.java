@@ -1,13 +1,18 @@
 package com.example.android.flagquiz;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Surface;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -22,6 +27,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class MainActivity extends AppCompatActivity {
+
+    // TODO: Questions are in a variety of formats such as free text response, checkboxes, and radio buttons.
+    // Checkboxes are only used for questions with multiple right answers. Radio buttons are only used for questions with a single right answer.
+
+    // TODO: The app gracefully handles displaying all the content on screen when rotated. Either by updating the layout, adding a scrollable feature or some other mechanism that adheres to Android development guidelines.
 
     // Constants
     public static final int ACTIVITY_MENU_CHOICE = R.menu.menu_quiz_debug;
@@ -60,25 +70,19 @@ public class MainActivity extends AppCompatActivity {
         buttonEasyQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentEasyQuiz = new Intent(getApplicationContext(), QuizActivity.class);
-                intentEasyQuiz.putExtra("DIFFICULTY", quizDifficulty.easy.ordinal()); // 0
-                startActivity(intentEasyQuiz);
+                difficultyButtonHandler(quizDifficulty.easy.ordinal());
             }
         });
         buttonNormalQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentNormalQuiz = new Intent(getApplicationContext(), QuizActivity.class);
-                intentNormalQuiz.putExtra("DIFFICULTY", quizDifficulty.normal.ordinal()); // 1
-                startActivity(intentNormalQuiz);
+                difficultyButtonHandler(quizDifficulty.normal.ordinal());
             }
         });
         buttonHardQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentHardQuiz = new Intent(getApplicationContext(), QuizActivity.class);
-                intentHardQuiz.putExtra("DIFFICULTY", quizDifficulty.hard.ordinal()); // 2
-                startActivity(intentHardQuiz);
+                difficultyButtonHandler(quizDifficulty.hard.ordinal());
             }
         });
         buttonFlagViewer.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +99,57 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intentHighScores);
             }
         });
+    }
+
+    private void difficultyButtonHandler(int difficulty) {
+        Intent intent = new Intent(getApplicationContext(), QuizActivity.class);
+        intent.putExtra("DIFFICULTY", difficulty); // 0
+
+        // Pass the current screen orientation so that QuizActivity can lock it there during the quiz
+        int thisOrientation = getScreenRotation();
+        thisOrientation = translateScreenRotation_degrees_toActivityInfoScreenOrientation(thisOrientation);
+        intent.putExtra("screenOrientation", thisOrientation);
+
+        startActivity(intent);
+    }
+
+    // Get the screen orientation in degrees
+    private int getScreenRotation() {
+        final Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+
+        switch (display.getRotation()) {
+            case Surface.ROTATION_0:
+//                System.out.println("SCREEN_ORIENTATION_PORTRAIT");
+                return 0;
+            case Surface.ROTATION_90:
+//                System.out.println("SCREEN_ORIENTATION_LANDSCAPE");
+                return 90;
+            case Surface.ROTATION_180:
+//                System.out.println("SCREEN_ORIENTATION_REVERSE_PORTRAIT");
+                return 180;
+            case Surface.ROTATION_270:
+//                System.out.println("SCREEN_ORIENTATION_REVERSE_LANDSCAPE");
+                return 270;
+        }
+
+        return -1;
+    }
+
+    // Translate screen rotation (degrees) to screen orientation (ActivityInfo)
+    // See: https://developer.android.com/reference/android/content/pm/ActivityInfo.html#SCREEN_ORIENTATION_LANDSCAPE
+    private int translateScreenRotation_degrees_toActivityInfoScreenOrientation(int degrees) {
+        switch (degrees) {
+            case 0:
+                return ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+            case 90:
+                return ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+            case 180:
+                return ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
+            case 270:
+                return ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
+            default:
+                return ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+        }
     }
 
     @Override

@@ -21,6 +21,8 @@ public class FlagViewerActivity extends AppCompatActivity {
     TODO: refactor handling of country_data.xml so that there isn't duplicate data (for instance we have up to 4 copies of each Country Name)
     */
 
+    private String lastSelectedCountryCode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,11 +50,31 @@ public class FlagViewerActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Display the country code corresponding score the clicked country name
 //                displayToast(countryCodes[position]);
+                lastSelectedCountryCode = countryCodes[position];
 
                 // Display the flag corresponding score the clicked country name
-                imageView1.setImageResource(getResources().getIdentifier(countryCodes[position] , "drawable", "com.example.android.flagquiz"));
+                imageView1.setImageResource(getResources().getIdentifier(countryCodes[position], "drawable", "com.example.android.flagquiz"));
             }
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        savedInstanceState.putString("lastSelectedCountryCode", lastSelectedCountryCode);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        lastSelectedCountryCode = savedInstanceState.getString("lastSelectedCountryCode");
+
+        if (lastSelectedCountryCode != null) {
+            final ImageView imageView1 = findViewById(R.id.imageView1);
+            imageView1.setImageResource(getResources().getIdentifier(lastSelectedCountryCode, "drawable", "com.example.android.flagquiz"));
+        }
     }
 
     // Display Toast notification

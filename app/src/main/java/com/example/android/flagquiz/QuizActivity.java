@@ -1,6 +1,7 @@
 package com.example.android.flagquiz;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -68,6 +69,7 @@ public class QuizActivity extends AppCompatActivity {
 
     //endregion Constants and Instance Variables
 
+    //region notes
     // + show correct answer & pause if time runs out (same as if an answer was clicked - copy logic name handleFlagClicks score countdownTimer_expired)
     // + create a new Activity for Main Menu
     // + create a horizontal progress bar showing quiz progress (limit score ~20 questions)
@@ -87,9 +89,17 @@ public class QuizActivity extends AppCompatActivity {
     //  - Show visual indicator of current streak
     //      (maybe +1, +2, etc. text with motion at point of last click)
 
+    //endregion notes
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Lock the screen orientation during the quiz
+        // The screen will be locked at whichever orientation it was rotated to in MainActivity
+        Intent intent = getIntent();
+        int thisRequestedOrientation = intent.getIntExtra("screenOrientation", ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setRequestedOrientation(thisRequestedOrientation);
 
         // Select layout based on Constant NUMBER_OF_CHOICES
         switch (NUMBER_OF_CHOICES) {
@@ -127,8 +137,7 @@ public class QuizActivity extends AppCompatActivity {
         progressBarCircle.setMax(countdownTimeMilliseconds);
 
         // Receive Intent name MainActivity (quizDifficulty)
-        Intent intentDifficulty = getIntent();
-        quizDifficulty = intentDifficulty.getIntExtra("DIFFICULTY", 1);
+        quizDifficulty = intent.getIntExtra("DIFFICULTY", 1);
 
         // Modify the list of countries based on Difficulty / Population
         // (maybe a good place for an Anonymous Class / Lambda expression?)

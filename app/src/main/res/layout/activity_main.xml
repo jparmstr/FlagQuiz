@@ -1,67 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context="com.example.android.flagquiz.MainActivity">
 
-    <TextView
-        android:id="@+id/textView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="32dp"
-        android:text="Flag Quiz"
-        android:textAlignment="center"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="36sp"
-        android:textStyle="bold" />
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/buttonQuizEasy"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@color/easyQuizColor"
-        android:text="Easy"
-        android:textColor="@android:color/white" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="32dp"
+            android:text="Flag Quiz"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="36sp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/buttonQuizNormal"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@color/normalQuizColor"
-        android:text="Normal"
-        android:textColor="@android:color/white" />
+        <Button
+            android:id="@+id/buttonQuizEasy"
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@color/easyQuizColor"
+            android:text="Easy"
+            android:textColor="@android:color/white" />
 
-    <Button
-        android:id="@+id/buttonQuizHard"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@color/hardQuizColor"
-        android:text="Hard"
-        android:textColor="@android:color/white" />
+        <Button
+            android:id="@+id/buttonQuizNormal"
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@color/normalQuizColor"
+            android:text="Normal"
+            android:textColor="@android:color/white" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="56dp" />
+        <Button
+            android:id="@+id/buttonQuizHard"
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@color/hardQuizColor"
+            android:text="Hard"
+            android:textColor="@android:color/white" />
 
-    <Button
-        android:id="@+id/buttonFlagViewer"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="Flag Viewer" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="56dp" />
 
-    <Button
-        android:id="@+id/buttonHighScores"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="High Scores" />
+        <Button
+            android:id="@+id/buttonFlagViewer"
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Flag Viewer" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/buttonHighScores"
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="High Scores" />
+
+    </LinearLayout>
+
+</ScrollView>

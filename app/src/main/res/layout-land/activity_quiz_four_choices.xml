@@ -12,7 +12,7 @@
         android:id="@+id/fourChoiceQuiz_correctAnswerTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="4dp"
         android:text="Country Name"
         android:textAlignment="center"
         android:textColor="@android:color/black"
@@ -30,7 +30,9 @@
             android:id="@+id/fourChoiceQuiz_flag1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_weight="1"
             app:srcCompat="@drawable/ad" />
 
@@ -38,7 +40,9 @@
             android:id="@+id/fourChoiceQuiz_flag2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_weight="1"
             app:srcCompat="@drawable/ae" />
     </LinearLayout>
@@ -55,7 +59,9 @@
             android:id="@+id/fourChoiceQuiz_flag3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_weight="1"
             app:srcCompat="@drawable/af" />
 
@@ -63,7 +69,9 @@
             android:id="@+id/fourChoiceQuiz_flag4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_weight="1"
             app:srcCompat="@drawable/ag" />
     </LinearLayout>
@@ -87,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="32dp"
+                android:layout_marginBottom="24dp"
                 android:layout_weight="1"
                 android:text="Score: 1"
                 android:textAlignment="center"

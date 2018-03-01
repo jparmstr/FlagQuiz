@@ -45,6 +45,7 @@ public class ResultsActivity extends AppCompatActivity {
 
     // High Scores
     public HighScoreItem[] highScores = new HighScoreItem[10];
+    private String thisHighScoreName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +80,40 @@ public class ResultsActivity extends AppCompatActivity {
         }
     }
 
-    private static int convertDpToPixel(float dp){
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        savedInstanceState.putInt("numberCorrect", numberCorrect);
+        savedInstanceState.putInt("quiz_number_of_questions", quiz_number_of_questions);
+        savedInstanceState.putInt("score", score);
+        savedInstanceState.putInt("streak_longest", streak_longest);
+        savedInstanceState.putInt("quizDifficulty", quizDifficulty);
+        savedInstanceState.putString("thisHighScoreName", thisHighScoreName);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        numberCorrect = savedInstanceState.getInt("numberCorrect");
+        quiz_number_of_questions = savedInstanceState.getInt("quiz_number_of_questions");
+        score = savedInstanceState.getInt("score");
+        streak_longest = savedInstanceState.getInt("streak_longest");
+        quizDifficulty = savedInstanceState.getInt("quizDifficulty");
+        thisHighScoreName = savedInstanceState.getString("thisHighScoreName");
+
+        // Update the interface if a Name has already been entered (such as when rotating the screen)
+        if (thisHighScoreName != null) {
+            resultsNewHighScoreButton.setVisibility(View.GONE);
+            resultsNewHighScore_nameTextView.setVisibility(View.VISIBLE);
+            resultsNewHighScore_nameTextView.setText(thisHighScoreName);
+
+            resultsNewHighScore_nameTextView.setText(thisHighScoreName);
+        }
+    }
+
+    private static int convertDpToPixel(float dp) {
         DisplayMetrics metrics = getSystem().getDisplayMetrics();
         float px = dp * (metrics.densityDpi / 160f);
         return Math.round(px);
@@ -113,9 +147,10 @@ public class ResultsActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 // Create a new high score item
                 HighScoreItem thisHighScore = new HighScoreItem();
+                thisHighScoreName = editText.getText().toString();
 
                 thisHighScore.setQuizDifficulty(quizDifficulty);
-                thisHighScore.setName(editText.getText().toString());
+                thisHighScore.setName(thisHighScoreName);
                 thisHighScore.setScore(score);
 
                 // When the Activity loaded we only let the New High Score Views be visible if
