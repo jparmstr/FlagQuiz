@@ -4,13 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -20,7 +18,7 @@ import java.util.Random;
  * Created by Pete on 3/1/2018.
  */
 
-public class QuestionQuizActivity extends AppCompatActivity {
+public class QuizQuestionsActivity extends AppCompatActivity {
 
     //region Constants and Instance Variables
     // Constants
@@ -32,22 +30,22 @@ public class QuestionQuizActivity extends AppCompatActivity {
     // Data (full data set)
     String[] countryCodes = {};
     String[] countryNames = {};
-
     String[] countryPopulations = {};
+
     // Quiz Data (limited by quiz difficulty)
     String[] quiz_countryCodes = {};
-
     String[] quiz_countryNames = {};
+
     // View references
     LinearLayout fillInTheBlank_mainLayout;
 
     // Quiz variables
     Question[] questions;
-    int score;
-    int numberCorrect;
+//    int score;
+//    int numberCorrect;
     int quizDifficulty;
-    public int quiz_number_of_countries = 250;
-    int quiz_number_of_questions = 10;
+    int quiz_number_of_countries = 250;
+    int quiz_number_of_questions = 1;
 
     // No timers (for now)
 
@@ -58,8 +56,7 @@ public class QuestionQuizActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_questions);
+        setContentView(R.layout.activity_quiz_questions);
 
         // Show back button on action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -102,49 +99,77 @@ public class QuestionQuizActivity extends AppCompatActivity {
                 break;
         }
 
-        generateQuestions();
-
         // Get view references
         fillInTheBlank_mainLayout = findViewById(R.id.questions_mainLayout);
-        // this is handled by each Question, pretty much...
+
+
+        // Only generate questions if this isn't a saved instance state
+        // Otherwise the Questions[] will be loaded in onRestoreInstanceState
+        if (savedInstanceState == null) {
+            generateQuestions();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        savedInstanceState.putInt("quizDifficulty", quizDifficulty);
+
+        // Save the state of each Question in questions via Parcelable
+        // (Thankfully the fragments seem to be persisting automatically)
+        savedInstanceState.putParcelableArray("questions", questions);
+
+        // Data (full data set) variables can be loaded again just fine
+        // Quiz Data can be loaded again
+        // View references can be created again
+        // quiz_number_of_countries and quiz_number_of_questions can be created again (will always be the same according to quizDifficulty)
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        quizDifficulty = savedInstanceState.getInt("quizDifficulty");
+        questions = (Question[]) savedInstanceState.getParcelableArray("questions");
     }
 
     private void generateQuestions() {
-        // Resize the questions array to hold the number_of_questions
-        questions = new Question[quiz_number_of_questions];
+            // Resize the questions array to hold the number_of_questions
+            questions = new Question[quiz_number_of_questions];
 
-        // Begin the transaction
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            // Begin the transaction
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-        for (int i = 0; i < quiz_number_of_questions; i++) {
-            Question thisQuestion = new Question();
-            thisQuestion.create();
+            for (int i = 0; i < quiz_number_of_questions; i++) {
+                Question thisQuestion = new Question();
+                thisQuestion.create();
 
-            questions[i] = thisQuestion;
+                questions[i] = thisQuestion;
 
-            // Generate new fragments based on thisQuestionType
-            switch (thisQuestion.thisQuestionType) {
-                case 0:
-                    thisQuestion.question_radioButtons = new Question_RadioButtons();
-                    ft.add(R.id.questions_frameLayout, thisQuestion.question_radioButtons);
-                    break;
-                case 1:
-                    thisQuestion.question_checkBoxes = new Question_CheckBoxes();
-                    ft.add(R.id.questions_frameLayout, thisQuestion.question_checkBoxes);
-                    break;
-                case 2:
-                    thisQuestion.question_fillInTheBlank = new Question_FillInTheBlank();
-                    ft.add(R.id.questions_frameLayout, thisQuestion.question_fillInTheBlank);
-                    break;
+                // Generate new fragments based on thisQuestionType
+                switch (thisQuestion.thisQuestionType) {
+                    case 0:
+                        thisQuestion.question_radioButtons = new Question_RadioButtons();
+                        ft.add(R.id.questions_frameLayout, thisQuestion.question_radioButtons);
+                        break;
+                    case 1:
+                        thisQuestion.question_checkBoxes = new Question_CheckBoxes();
+                        ft.add(R.id.questions_frameLayout, thisQuestion.question_checkBoxes);
+                        break;
+                    case 2:
+                        thisQuestion.question_fillInTheBlank = new Question_FillInTheBlank();
+                        ft.add(R.id.questions_frameLayout, thisQuestion.question_fillInTheBlank);
+                        break;
+                }
             }
-        }
 
-        ft.commit();
+            ft.commit();
 
-        for (Question thisQuestion : questions) {
-            // Handle answer generation (random answers, random correct answer)
-            generateAnswers(thisQuestion);
-        }
+            for (Question thisQuestion : questions) {
+                // Handle answer generation (random answers, random correct answer)
+                generateAnswers(thisQuestion);
+            }
     }
 
     private void generateAnswers(Question question) {
@@ -193,7 +218,7 @@ public class QuestionQuizActivity extends AppCompatActivity {
                 // Save information about the first correct answer
                 question.question_checkBoxes.correctAnswer1 = correctAnswer;
                 question.question_checkBoxes.correctAnswer1Position = correctAnswerPosition_relativeToChoices;
-                question.question_checkBoxes.correctAnswer1CountryCode =quiz_countryCodes[positions.get(correctAnswerPosition_relativeToChoices)];
+                question.question_checkBoxes.correctAnswer1CountryCode = quiz_countryCodes[positions.get(correctAnswerPosition_relativeToChoices)];
 
                 // Randomly choose a second correct answer
                 int correctAnswerPosition2_relativeToChoices = random.nextInt(NUMBER_OF_CHOICES);
@@ -265,6 +290,16 @@ public class QuestionQuizActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                //  this crashes the app due to onSaveInstanceState's parcelable array saving of questions[]
+                //  but the back button does not suffer from this.
+                //  How to give this button the same functionality as Back?
+                //  Or, how to skip the savedInstanceState method if we're leaving the Activity instead of rotating the screen?
+
+                // Actually the Question.writeToParcel method is never called _except_ when goToMainActivity is called.
+                // So the parcelable quality of Question is not contributing to the Fragment persistence
+                // and the out.writeValue() calls never work since the Fragments cannot be parcelable themselves
+
+                // TODO: destroy the fragment objects somehow (I think they're being retained due to setRetainInstance(true) in their onCreateView()s
                 goToMainActivity();
                 return true;
             default:

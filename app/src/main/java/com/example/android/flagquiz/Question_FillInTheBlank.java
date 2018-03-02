@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import java.util.Calendar;
+
 /**
  * Created by Pete on 3/1/2018.
  */
@@ -27,10 +29,21 @@ public class Question_FillInTheBlank extends android.support.v4.app.Fragment {
     ImageView fillInTheBlankQuestion_image1;
     EditText fillInTheBlankQuestion_answer;
 
-    // The onCreateView method is called when Fragment should create its View object hierarchy,
-    // either dynamically or via XML layout inflation.
+    // Unique id meant to identify this fragment
+    private String mTime;
+
+    // The onCreateView method is called when Fragment should create its View object hierarchy, either dynamically or via XML layout inflation.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        setRetainInstance(true);
+
+        if (savedInstanceState != null) {
+            // Restore last state
+            mTime = savedInstanceState.getString("time_key");
+        } else {
+            mTime = "" + Calendar.getInstance().getTimeInMillis();
+        }
+
         // Defines the xml file for the fragment
         return inflater.inflate(R.layout.question_fill_in_the_blank, parent, false);
     }
@@ -43,12 +56,18 @@ public class Question_FillInTheBlank extends android.support.v4.app.Fragment {
         fillInTheBlankQuestion_image1 = view.findViewById(R.id.fillInTheBlankQuestion_image1);
         fillInTheBlankQuestion_answer = view.findViewById(R.id.fillInTheBlankQuestion_answer);
 
-        // Correct answers are generated in QuestionQuizActivity before this is triggered
+        // Correct answers are generated in QuizQuestionsActivity before this is triggered
 
         // Set the flag ImageView source (correct answer)
         fillInTheBlankQuestion_image1.setImageResource(getResources().getIdentifier(correctAnswerCountryCode, "drawable", "com.example.android.flagquiz"));
         fillInTheBlankQuestion_image1.setTag(correctAnswer);
 //        fillInTheBlankQuestion_image1.setBackgroundColor(ContextCompat.getColor(this, R.color.backgroundColor));
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("time_key", mTime);
     }
 
     public boolean hasBeenAnswered() {

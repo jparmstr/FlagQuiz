@@ -6,7 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +28,8 @@ import static android.content.res.Resources.getSystem;
 import static com.example.android.flagquiz.MainActivity.HIGHSCORES_FILENAME;
 
 public class ResultsActivity extends AppCompatActivity {
+
+    public static final int MAX_NAME_LENGTH = 35;
 
     // View references
     TextView resultsScoreTextView;
@@ -132,7 +136,14 @@ public class ResultsActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         lp.setMargins(convertDpToPixel(16), 0, convertDpToPixel(16), 0);
         final EditText editText = new EditText(this);
-        // TODO: limit how much text can be entered in editText
+
+        // limit how much text can be entered in editText
+        InputFilter[] inputFilters = new InputFilter[1];
+        inputFilters[0] = new InputFilter.LengthFilter(MAX_NAME_LENGTH);
+        editText.setFilters(inputFilters);
+
+        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME | InputType.TYPE_CLASS_TEXT);
+        editText.setMaxLines(1);
         editText.setLayoutParams(lp);
         linearLayout.addView(editText, lp);
 

@@ -1,18 +1,17 @@
 package com.example.android.flagquiz;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.Toast;
 
-import static com.example.android.flagquiz.QuestionQuizActivity.NUMBER_OF_CHOICES;
+import java.util.Calendar;
+
+import static com.example.android.flagquiz.QuizQuestionsActivity.NUMBER_OF_CHOICES;
 
 /**
  * Created by Pete on 3/1/2018.
@@ -29,17 +28,36 @@ public class Question_CheckBoxes extends android.support.v4.app.Fragment {
     public String correctAnswer2CountryCode;
     public String[] choicesText;
 
-    public int thisQuestionType;
+//    public int thisQuestionType;
 
     // View references
     ImageView checkboxQuestion_image1;
     ImageView checkboxQuestion_image2;
     CheckBox[] checkBoxes;
 
-    // The onCreateView method is called when Fragment should create its View object hierarchy,
-    // either dynamically or via XML layout inflation.
+    // Unique id meant to identify this fragment
+    private String mTime;
+
+    // The onCreateView method is called when Fragment should create its View object hierarchy, either dynamically or via XML layout inflation.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        setRetainInstance(true);
+
+        if (savedInstanceState != null) {
+            // Restore state
+//            correctAnswer1 = savedInstanceState.getString("correctAnswer1");
+//            correctAnswer2 = savedInstanceState.getString("correctAnswer2");
+//            correctAnswer1Position = savedInstanceState.getInt("correctAnswer1Position");
+//            correctAnswer2Position = savedInstanceState.getInt("correctAnswer2Position");
+//            correctAnswer1CountryCode = savedInstanceState.getString("correctAnswer1CountryCode");
+//            correctAnswer2CountryCode = savedInstanceState.getString("correctAnswer2CountryCode");
+//            choicesText = savedInstanceState.getStringArray("choicesText");
+
+            mTime = savedInstanceState.getString("time_key");
+        } else {
+            mTime = "" + Calendar.getInstance().getTimeInMillis();
+        }
+
         // Defines the xml file for the fragment
         return inflater.inflate(R.layout.question_checkboxes, parent, false);
     }
@@ -70,7 +88,7 @@ public class Question_CheckBoxes extends android.support.v4.app.Fragment {
             });
         }
 
-        // Correct answers are generated in QuestionQuizActivity before this is triggered
+        // Correct answers are generated in QuizQuestionsActivity before this is triggered
 
         // Set the first flag ImageView source (correct answer 1)
         checkboxQuestion_image1.setImageResource(getResources().getIdentifier(correctAnswer1CountryCode, "drawable", "com.example.android.flagquiz"));
@@ -86,6 +104,21 @@ public class Question_CheckBoxes extends android.support.v4.app.Fragment {
         for (int i = 0; i < NUMBER_OF_CHOICES; i++) {
             checkBoxes[i].setText(choicesText[i]);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle out) {
+        super.onSaveInstanceState(out);
+
+//        out.putString("correctAnswer1",correctAnswer1);
+//        out.putString("correctAnswer2",correctAnswer2);
+//        out.putInt("correctAnswer1Position",correctAnswer1Position);
+//        out.putInt("correctAnswer2Position",correctAnswer2Position);
+//        out.putString("correctAnswer1CountryCode",correctAnswer1CountryCode);
+//        out.putString("correctAnswer2CountryCode",correctAnswer2CountryCode);
+//        out.putStringArray("choicesText",choicesText);
+
+        out.putString("time_key", mTime);
     }
 
     // The question is answered when 2 and only 2 CheckBoxes are checked
@@ -129,4 +162,5 @@ public class Question_CheckBoxes extends android.support.v4.app.Fragment {
 
         return checkedCount;
     }
+
 }

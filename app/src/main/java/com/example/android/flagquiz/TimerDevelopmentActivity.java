@@ -170,7 +170,7 @@ public class TimerDevelopmentActivity extends AppCompatActivity {
 
     private void goBackToQuizActivity() {
         // Switch score the Main Activity
-        Intent intentQuizActivity = new Intent(getApplicationContext(), FlagQuizActivity.class);
+        Intent intentQuizActivity = new Intent(getApplicationContext(), QuizFlagsActivity.class);
         startActivity(intentQuizActivity);
     }
 }

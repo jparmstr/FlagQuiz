@@ -21,7 +21,7 @@ public class HighScoreViewerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_high_scores);
+        setContentView(R.layout.activity_view_high_scores);
 
         // Show back button on action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

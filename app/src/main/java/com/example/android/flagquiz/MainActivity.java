@@ -167,20 +167,20 @@ public class MainActivity extends AppCompatActivity {
 
         switch (thisQuizType) {
             case 0:
-                thisClass = FlagQuizActivity.class;
+                thisClass = QuizFlagsActivity.class;
                 break;
             case 1:
-                thisClass = CountryNameQuizActivity.class;
+                thisClass = QuizCountryNamesActivity.class;
                 break;
             case 2:
-                thisClass = QuestionQuizActivity.class;
+                thisClass = QuizQuestionsActivity.class;
                 break;
         }
 
         Intent intent = new Intent(getApplicationContext(), thisClass);
         intent.putExtra("DIFFICULTY", difficulty); // 0
 
-        // Pass the current screen orientation so that FlagQuizActivity can lock it there during the quiz
+        // Pass the current screen orientation so that QuizFlagsActivity can lock it there during the quiz
         int thisOrientation = getScreenRotation();
         thisOrientation = translateScreenRotation_degrees_toActivityInfoScreenOrientation(thisOrientation);
         intent.putExtra("screenOrientation", thisOrientation);

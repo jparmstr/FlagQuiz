@@ -1,17 +1,16 @@
 package com.example.android.flagquiz;
 
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Random;
 
-import static com.example.android.flagquiz.QuestionQuizActivity.NUMBER_OF_CHOICES;
+import static com.example.android.flagquiz.QuizQuestionsActivity.NUMBER_OF_CHOICES;
 
 /**
  * Created by Pete on 3/1/2018.
@@ -31,11 +30,23 @@ public class Question_RadioButtons extends android.support.v4.app.Fragment {
     public ImageView radioButtonQuestion_flagImageView;
     public RadioButton[] radioButtons;
 
-    private Random random = new Random();
+//    private Random random = new Random();
+
+    // Unique id meant to identify this fragment
+    private String mTime;
 
     // The onCreateView method is called when Fragment should create its View object hierarchy, either dynamically or via XML layout inflation.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        setRetainInstance(true);
+
+        if (savedInstanceState != null) {
+            // Restore last state
+            mTime = savedInstanceState.getString("time_key");
+        } else {
+            mTime = "" + Calendar.getInstance().getTimeInMillis();
+        }
+
         // Defines the xml file for the fragment
         return inflater.inflate(R.layout.question_radiobuttons, parent, false);
     }
@@ -67,7 +78,7 @@ public class Question_RadioButtons extends android.support.v4.app.Fragment {
             });
         }
 
-        // Handle answer creation from QuestionQuizActivity since it contains the Arrays and other variables we need to refer to
+        // Handle answer creation from QuizQuestionsActivity since it contains the Arrays and other variables we need to refer to
 
         // Set the flag ImageView source (correct answer)
         radioButtonQuestion_flagImageView.setImageResource(getResources().getIdentifier(correctAnswerCountryCode, "drawable", "com.example.android.flagquiz"));
@@ -78,6 +89,12 @@ public class Question_RadioButtons extends android.support.v4.app.Fragment {
         for (int i = 0; i < NUMBER_OF_CHOICES; i++) {
             radioButtons[i].setText(choicesText[i]);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("time_key", mTime);
     }
 
     public boolean hasBeenAnswered() {

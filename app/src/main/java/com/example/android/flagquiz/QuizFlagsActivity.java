@@ -15,7 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class FlagQuizActivity extends AppCompatActivity {
+public class QuizFlagsActivity extends AppCompatActivity {
 
     //region Constants and Instance Variables
 
@@ -107,10 +107,10 @@ public class FlagQuizActivity extends AppCompatActivity {
         // Select layout based on Constant NUMBER_OF_CHOICES
         switch (NUMBER_OF_CHOICES) {
             case 3:
-                setContentView(R.layout.activity_flag_quiz_three_choices);
+                setContentView(R.layout.activity_quiz_flags_three_choices);
                 break;
             case 4:
-                setContentView(R.layout.activity_flag_quiz_four_choices);
+                setContentView(R.layout.activity_quiz_flags_four_choices);
                 break;
         }
 

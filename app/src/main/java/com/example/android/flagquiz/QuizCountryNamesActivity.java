@@ -20,7 +20,7 @@ import java.util.Random;
  * Created by Pete on 3/1/2018.
  */
 
-public class CountryNameQuizActivity extends AppCompatActivity {
+public class QuizCountryNamesActivity extends AppCompatActivity {
 
     //region Constants and Instance Variables
 
@@ -84,7 +84,7 @@ public class CountryNameQuizActivity extends AppCompatActivity {
         int thisRequestedOrientation = intent.getIntExtra("screenOrientation", ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setRequestedOrientation(thisRequestedOrientation);
 
-        setContentView(R.layout.activity_country_names_quiz);
+        setContentView(R.layout.activity_quiz_country_names);
 
         // Show back button on action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

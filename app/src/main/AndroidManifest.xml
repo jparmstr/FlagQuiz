@@ -10,9 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".FlagViewerActivity" />
-        <activity android:name=".FlagQuizActivity" />
-        <activity android:name=".CountryNameQuizActivity" />
-        <activity android:name=".QuestionQuizActivity" />
+        <activity android:name=".QuizFlagsActivity" />
+        <activity android:name=".QuizCountryNamesActivity" />
+        <activity android:name=".QuizQuestionsActivity" />
         <activity android:name=".TimerDevelopmentActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
