@@ -151,6 +151,25 @@ public class Question_CheckBoxes extends android.support.v4.app.Fragment {
         return result;
     }
 
+    // You get 1 point per correct answer (2 points possible)
+    public int getScore() {
+        int score = 0;
+
+        String thisCorrectAnswer1 = correctAnswer1.toLowerCase();
+        String thisCorrectAnswer2 = correctAnswer2.toLowerCase();
+
+        for (CheckBox c : checkBoxes) {
+            if (c.isChecked()) {
+                String thisGivenAnswer = c.getText().toString().toLowerCase();
+                if (thisGivenAnswer.equals(thisCorrectAnswer1) || thisGivenAnswer.equals(thisCorrectAnswer2)) {
+                    score++;
+                }
+            }
+        }
+
+        return score;
+    }
+
     public int numberChecked() {
         int checkedCount = 0;
 

@@ -92,4 +92,18 @@ public class Question_FillInTheBlank extends android.support.v4.app.Fragment {
 
         return result;
     }
+
+    // You get 2 points for a correct answer
+    public int getScore() {
+        int score = 0;
+
+        String givenAnswer = fillInTheBlankQuestion_answer.getText().toString().toLowerCase();
+        String thisCorrectAnswer = correctAnswer.toLowerCase();
+
+        if (givenAnswer.equals(thisCorrectAnswer)) {
+            score = 2;
+        }
+
+        return score;
+    }
 }

@@ -24,7 +24,7 @@ public class Question implements Parcelable {
     Question_CheckBoxes question_checkBoxes;
     Question_FillInTheBlank question_fillInTheBlank;
 
-//    LayoutInflater inflater;
+    public Random random = new Random();
 
     //region Parcelable methods
     public Question() {
@@ -72,13 +72,9 @@ public class Question implements Parcelable {
 
     //endregion Parcelable methods
 
-
-    public Random random = new Random();
-
     public void create() {
         // Random question type
-//        thisQuestionType = random.nextInt(3);
-        thisQuestionType = 1;
+        thisQuestionType = random.nextInt(3);
 
         // The fragment instantiation is handled in QuizQuestionsActivity.generateQuestions()
 
@@ -119,5 +115,23 @@ public class Question implements Parcelable {
         }
 
         return result;
+    }
+
+    public int getScore() {
+        int score = 0;
+
+        switch (thisQuestionType) {
+            case 0:
+                score = question_radioButtons.getScore();
+                break;
+            case 1:
+                score = question_checkBoxes.getScore();
+                break;
+            case 2:
+                score = question_fillInTheBlank.getScore();
+                break;
+        }
+
+        return score;
     }
 }

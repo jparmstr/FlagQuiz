@@ -125,4 +125,22 @@ public class Question_RadioButtons extends android.support.v4.app.Fragment {
 
         return result;
     }
+
+    // You get 1 point for a correct answer
+    public int getScore() {
+        int score = 0;
+
+        for (RadioButton r : radioButtons) {
+            if (r.isChecked()) {
+                String thisGivenAnswer = r.getText().toString().toLowerCase();
+                String thisCorrectAnswer = correctAnswer.toLowerCase();
+
+                if (thisGivenAnswer.equals(thisCorrectAnswer)) {
+                    score++;
+                }
+            }
+        }
+
+        return score;
+    }
 }

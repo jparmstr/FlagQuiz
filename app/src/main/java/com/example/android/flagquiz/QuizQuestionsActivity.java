@@ -41,11 +41,11 @@ public class QuizQuestionsActivity extends AppCompatActivity {
 
     // Quiz variables
     Question[] questions;
-//    int score;
-//    int numberCorrect;
+    int score;
+    int numberCorrect;
     int quizDifficulty;
     int quiz_number_of_countries = 250;
-    int quiz_number_of_questions = 1;
+    int quiz_number_of_questions = 2;
 
     // No timers (for now)
 
@@ -135,41 +135,41 @@ public class QuizQuestionsActivity extends AppCompatActivity {
     }
 
     private void generateQuestions() {
-            // Resize the questions array to hold the number_of_questions
-            questions = new Question[quiz_number_of_questions];
+        // Resize the questions array to hold the number_of_questions
+        questions = new Question[quiz_number_of_questions];
 
-            // Begin the transaction
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        // Begin the transaction
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-            for (int i = 0; i < quiz_number_of_questions; i++) {
-                Question thisQuestion = new Question();
-                thisQuestion.create();
+        for (int i = 0; i < quiz_number_of_questions; i++) {
+            Question thisQuestion = new Question();
+            thisQuestion.create();
 
-                questions[i] = thisQuestion;
+            questions[i] = thisQuestion;
 
-                // Generate new fragments based on thisQuestionType
-                switch (thisQuestion.thisQuestionType) {
-                    case 0:
-                        thisQuestion.question_radioButtons = new Question_RadioButtons();
-                        ft.add(R.id.questions_frameLayout, thisQuestion.question_radioButtons);
-                        break;
-                    case 1:
-                        thisQuestion.question_checkBoxes = new Question_CheckBoxes();
-                        ft.add(R.id.questions_frameLayout, thisQuestion.question_checkBoxes);
-                        break;
-                    case 2:
-                        thisQuestion.question_fillInTheBlank = new Question_FillInTheBlank();
-                        ft.add(R.id.questions_frameLayout, thisQuestion.question_fillInTheBlank);
-                        break;
-                }
+            // Generate new fragments based on thisQuestionType
+            switch (thisQuestion.thisQuestionType) {
+                case 0:
+                    thisQuestion.question_radioButtons = new Question_RadioButtons();
+                    ft.add(R.id.questions_frameLayout, thisQuestion.question_radioButtons);
+                    break;
+                case 1:
+                    thisQuestion.question_checkBoxes = new Question_CheckBoxes();
+                    ft.add(R.id.questions_frameLayout, thisQuestion.question_checkBoxes);
+                    break;
+                case 2:
+                    thisQuestion.question_fillInTheBlank = new Question_FillInTheBlank();
+                    ft.add(R.id.questions_frameLayout, thisQuestion.question_fillInTheBlank);
+                    break;
             }
+        }
 
-            ft.commit();
+        ft.commit();
 
-            for (Question thisQuestion : questions) {
-                // Handle answer generation (random answers, random correct answer)
-                generateAnswers(thisQuestion);
-            }
+        for (Question thisQuestion : questions) {
+            // Handle answer generation (random answers, random correct answer)
+            generateAnswers(thisQuestion);
+        }
     }
 
     private void generateAnswers(Question question) {
@@ -255,15 +255,19 @@ public class QuizQuestionsActivity extends AppCompatActivity {
 
         // All questions have been answered
 
-        // Temporarily, Toast a summary of correct answers
         int counter = 0;
         String summary = "";
         for (Question q : questions) {
             summary += "Question " + String.valueOf(counter) + " is " + (q.isCorrect() ? "correct" : "incorrect") + "\n";
+            numberCorrect += (q.isCorrect() ? 1 : 0);
+            score += q.getScore() * (quizDifficulty + 1);
             counter++;
         }
 
-        displayToast(summary);
+        // Temporarily, Toast a summary of correct answers
+//        displayToast(summary);
+
+        goToQuizResultsActivity();
     }
 
     private boolean haveAllQuestionsBeenAnswered() {
@@ -310,5 +314,16 @@ public class QuizQuestionsActivity extends AppCompatActivity {
     private void goToMainActivity() {
         Intent intentMainActivity = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intentMainActivity);
+    }
+
+    private void goToQuizResultsActivity() {
+        // Pass data about the quiz via Intent
+        Intent intentQuizResultsActivity = new Intent(getApplicationContext(), ResultsActivity.class);
+        intentQuizResultsActivity.putExtra("numberCorrect", numberCorrect);
+        intentQuizResultsActivity.putExtra("quiz_number_of_questions", quiz_number_of_questions);
+        intentQuizResultsActivity.putExtra("score", score);
+        intentQuizResultsActivity.putExtra("difficulty", quizDifficulty);
+        intentQuizResultsActivity.putExtra("streak_longest", -1);
+        startActivity(intentQuizResultsActivity);
     }
 }
