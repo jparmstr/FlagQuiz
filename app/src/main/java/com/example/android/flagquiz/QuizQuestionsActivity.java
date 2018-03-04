@@ -24,6 +24,7 @@ public class QuizQuestionsActivity extends AppCompatActivity {
     // Constants
     public static final int TOTAL_NUMBER_OF_COUNTRIES = 250;
     public static final int NUMBER_OF_CHOICES = 4;
+    int quiz_number_of_questions = 10;
 
     public enum questionType {radioButtons, checkBoxes, fillInTheBlank}
 
@@ -45,7 +46,6 @@ public class QuizQuestionsActivity extends AppCompatActivity {
     int numberCorrect;
     int quizDifficulty;
     int quiz_number_of_countries = 250;
-    int quiz_number_of_questions = 2;
 
     // No timers (for now)
 

@@ -24,6 +24,7 @@ public class QuizFlagsActivity extends AppCompatActivity {
     public static final int NUMBER_OF_CHOICES = 4;
     public static final int MILLISECONDS_BETWEEN_QUESTIONS = 750;
     public static final float FADED_VIEW_OPACITY = 0.15f; // 0 score 255
+    int quiz_number_of_questions = 10;
 
     // Data (full data set)
     String[] countryCodes = {};
@@ -52,7 +53,6 @@ public class QuizFlagsActivity extends AppCompatActivity {
     int quizDifficulty;
     int quizProgress_current = 0;
     int quiz_number_of_countries = 250;
-    int quiz_number_of_questions = 10;
 
     // Timer variables (visible countdown timer)
     long countdown_startTime = 0;
