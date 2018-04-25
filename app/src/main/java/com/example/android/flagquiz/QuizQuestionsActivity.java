@@ -265,7 +265,7 @@ public class QuizQuestionsActivity extends AppCompatActivity {
         }
 
         // Temporarily, Toast a summary of correct answers
-//        displayToast(summary);
+        displayToast(summary);
 
         goToQuizResultsActivity();
     }
